@@ -9,35 +9,52 @@ extension Trace<T> on T {
   }
 }
 
+bool rowEq(TEff t1, TEff t2) {
+  return t1.rowEq(t2);
+}
+
+extension on List<Type> {
+  TEff get row => TEff.flatRow(this);
+}
+
+final eff1 = TEff('eff1', []);
+final eff2 = TEff('eff2', []);
+TEff eff2p(Type t) => TEff('eff2', [t]);
+final effv = const TEffVar('e');
+
 void main() {
   test('Basic Swap', () {
     check(rowEq(
-      row(eff1, row(eff2, effv)).trace,
-      row(eff2, row(eff1, effv)).trace,
+      [eff1, eff2, effv].row,
+      [eff2, eff1, effv].row,
     )).isTrue();
   });
   test('Not Equal', () {
     check(rowEq(
-      row(eff1, row(eff1, effv)),
-      row(eff2, row(eff1, effv)),
+      [eff1, eff2, effv].row,
+      [eff1, eff1, effv].row,
     )).isFalse();
   });
   test('Complex Swap Eq', () {
     check(rowEq(
-      row(eff1, row(eff1, row(eff2, effv))),
-      row(eff1, row(eff2, row(eff1, effv))),
+      [eff1, eff1, eff2, effv].row,
+      [eff1, eff2, eff1, effv].row,
     )).isTrue();
   });
   test('Swap NEq', () {
     check(rowEq(
-      row(eff2p(boolT), row(eff2p(intT), effv)),
-      row(eff2p(intT), row(eff2p(boolT), effv)),
+      [eff2p(boolT), eff2p(intT), effv].row,
+      [eff2p(intT), eff2p(boolT), effv].row,
     )).isFalse();
   });
   test('Complex Swap NEq', () {
     check(rowEq(
-      row(eff1, row(eff2p(boolT), row(eff2p(intT), effv))),
-      row(eff2p(intT), row(eff1, row(eff2p(boolT), effv))),
+      [eff1, eff2p(boolT), eff2p(intT), effv].row,
+      [eff2p(intT), eff1, eff2p(boolT), effv].row,
     )).isFalse();
+  });
+
+  test('Handle, app', () {
+    // check();
   });
 }
