@@ -19,6 +19,8 @@ sealed class Type with _$Type {
     @Default(KEffConst()) Kind kind,
   }) = TEff;
 
+  static final emptyEff = Type.tEff(effExt, []);
+
   factory Type.tEffRow(TEff t1, Type t2) {
     assert(t2.isEff);
     return TEff(kind: const KEff(), effExt, [t1, t2]);
