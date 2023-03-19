@@ -100,8 +100,8 @@ class __$$KValCopyWithImpl<$Res> extends _$KindCopyWithImpl<$Res, _$KVal>
 
 /// @nodoc
 
-class _$KVal implements KVal {
-  const _$KVal();
+class _$KVal extends KVal {
+  const _$KVal() : super._();
 
   @override
   String toString() {
@@ -192,8 +192,9 @@ class _$KVal implements KVal {
   }
 }
 
-abstract class KVal implements Kind {
+abstract class KVal extends Kind {
   const factory KVal() = _$KVal;
+  const KVal._() : super._();
 }
 
 /// @nodoc
@@ -211,8 +212,8 @@ class __$$KEffCopyWithImpl<$Res> extends _$KindCopyWithImpl<$Res, _$KEff>
 
 /// @nodoc
 
-class _$KEff implements KEff {
-  const _$KEff();
+class _$KEff extends KEff {
+  const _$KEff() : super._();
 
   @override
   String toString() {
@@ -303,8 +304,9 @@ class _$KEff implements KEff {
   }
 }
 
-abstract class KEff implements Kind {
+abstract class KEff extends Kind {
   const factory KEff() = _$KEff;
+  const KEff._() : super._();
 }
 
 /// @nodoc
@@ -325,8 +327,8 @@ class __$$KEffConstCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$KEffConst implements KEffConst {
-  const _$KEffConst();
+class _$KEffConst extends KEffConst {
+  const _$KEffConst() : super._();
 
   @override
   String toString() {
@@ -417,8 +419,9 @@ class _$KEffConst implements KEffConst {
   }
 }
 
-abstract class KEffConst implements Kind {
+abstract class KEffConst extends Kind {
   const factory KEffConst() = _$KEffConst;
+  const KEffConst._() : super._();
 }
 
 /// @nodoc
@@ -466,8 +469,10 @@ class __$$KConCopyWithImpl<$Res> extends _$KindCopyWithImpl<$Res, _$KCon>
 
 /// @nodoc
 
-class _$KCon implements KCon {
-  const _$KCon(final List<Kind> args, this.result) : _args = args;
+class _$KCon extends KCon {
+  const _$KCon(final List<Kind> args, this.result)
+      : _args = args,
+        super._();
 
   final List<Kind> _args;
   @override
@@ -579,8 +584,9 @@ class _$KCon implements KCon {
   }
 }
 
-abstract class KCon implements Kind {
+abstract class KCon extends Kind {
   const factory KCon(final List<Kind> args, final Kind result) = _$KCon;
+  const KCon._() : super._();
 
   List<Kind> get args;
   Kind get result;

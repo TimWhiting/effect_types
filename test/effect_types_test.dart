@@ -5,7 +5,11 @@ import 'package:test/test.dart';
 
 extension Trace<T> on T {
   T get trace {
-    print(this);
+    if (this is Type) {
+      print((this as Type).string);
+    } else {
+      print(this);
+    }
     return this;
   }
 }
@@ -21,7 +25,7 @@ extension on List<Type> {
 final eff1 = TEff('eff1', []);
 final eff2 = TEff('eff2', []);
 TEff eff2p(Type t) => TEff('eff2', [t]);
-final effv = Type.tEffVar('e');
+final effv = Type.tEffVar();
 
 void main() {
   test('Basic Swap', () {
@@ -45,7 +49,7 @@ void main() {
   test('Swap NEq', () {
     check(rowEq(
       [eff2p(boolT), eff2p(intT), effv].row,
-      [eff2p(intT), eff2p(boolT), effv].row,
+      [eff2p(intT), eff2p(boolT).trace, effv].row.trace,
     )).isFalse();
   });
   test('Complex Swap NEq', () {

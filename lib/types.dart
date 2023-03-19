@@ -27,26 +27,36 @@ sealed class Type with _$Type {
     assert(ts.every((t) => t.isEff));
     return TEff(kind: const KEff(), effExt, ts);
   }
-  factory Type.tEffVar(String name) => TEff(kind: const KEff(), name, []);
+  factory Type.tEffVar({String name = 'μ'}) =>
+      TEff(kind: const KEff(), name, []);
 
   bool get isEff => kind == const KEff() || kind == const KEffConst();
 
-  @override
-  String toString() {
+  bool get isEffRow => name == effExt;
+
+  String get string {
+    final k = kind.string;
     if (this is TEff) {
-      final args = (this as TEff).args.map((e) => e.toString()).join(',');
+      final args = (this as TEff).args.map((e) => e.string).join(',');
+
       if (name == effExt) {
-        return '<$args>';
+        return '<$args>:$k';
       }
-      return '$name<$args>';
+      if (args.isEmpty) {
+        return '$name:$k';
+      }
+      return '$name<$args>:$k';
     } else if (this is TVar) {
-      return name;
+      return '$name:$k';
     } else if (this is TCon) {
-      final args = (this as TCon).args.map((e) => e.toString()).join(',');
-      return '$name<$args>';
+      final args = (this as TCon).args.map((e) => e.string).join(',');
+      if (args.isEmpty) {
+        return '$name:$k';
+      }
+      return '$name<$args>:$k';
     }
 
-    return super.toString();
+    return toString();
   }
 }
 
@@ -72,7 +82,7 @@ extension TEffE on TEff {
       }
     }
     if (hasVar) {
-      newArgs.add(Type.tEffVar('e'));
+      newArgs.add(Type.tEffVar()); //'ε'));
     }
     return Type.tEffFlatRow(newArgs) as TEff;
   }
@@ -111,7 +121,7 @@ extension TEffE on TEff {
       final c = t2[b];
       if (a is TEff && c is TEff) {
         if (a.name == c.name) {
-          if ('$a' == '$c') {
+          if (a == c) {
             final rest = b == t2.length - 1 ? [] : t2.sublist(b + 1);
             return checkFlattenedRows(
               t1.sublist(1),

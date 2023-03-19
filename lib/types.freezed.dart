@@ -162,6 +162,11 @@ class _$TVar extends TVar {
   final String name;
 
   @override
+  String toString() {
+    return 'Type.tVar(kind: $kind, name: $name)';
+  }
+
+  @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
@@ -320,6 +325,11 @@ class _$TCon extends TCon {
     if (_args is EqualUnmodifiableListView) return _args;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_args);
+  }
+
+  @override
+  String toString() {
+    return 'Type.tCon(kind: $kind, name: $name, args: $args)';
   }
 
   @override
@@ -489,6 +499,11 @@ class _$TEff extends TEff {
   @override
   @JsonKey()
   final Kind kind;
+
+  @override
+  String toString() {
+    return 'Type.tEff(name: $name, args: $args, kind: $kind)';
+  }
 
   @override
   bool operator ==(dynamic other) {
