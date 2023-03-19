@@ -1,6 +1,7 @@
 import 'package:checks/checks.dart';
 import 'package:effect_types/effect_types.dart';
 import 'package:effect_types/types.dart';
+import 'package:effect_types/typing.dart';
 import 'package:test/test.dart';
 
 extension Trace<T> on T {
@@ -59,7 +60,22 @@ void main() {
     )).isFalse();
   });
 
-  test('Handle, app', () {
-    // check();
+  test('Handle app', () {
+    check(TypeEnv().checkApp(
+      (Type.tFun(boolT, eff1, intT), eff1),
+      (boolT, eff1),
+      (intT, eff1),
+    )).isTrue();
+  });
+
+  test('Handle app polyEff', () {
+    check(TypeEnv().checkApp(
+      (
+        Type.tFun(boolT, [eff2p(boolT), effv].row, intT),
+        [eff2p(boolT), effv].row
+      ),
+      (boolT, [eff2p(boolT), effv].row),
+      (intT, [eff2p(boolT), effv].row),
+    )).isTrue();
   });
 }
