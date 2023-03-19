@@ -1,5 +1,6 @@
 import 'package:checks/checks.dart';
 import 'package:effect_types/effect_types.dart';
+import 'package:effect_types/types.dart';
 import 'package:test/test.dart';
 
 extension Trace<T> on T {
@@ -14,13 +15,13 @@ bool rowEq(TEff t1, TEff t2) {
 }
 
 extension on List<Type> {
-  TEff get row => TEff.flatRow(this);
+  TEff get row => Type.tEffFlatRow(this) as TEff;
 }
 
 final eff1 = TEff('eff1', []);
 final eff2 = TEff('eff2', []);
 TEff eff2p(Type t) => TEff('eff2', [t]);
-final effv = const TEffVar('e');
+final effv = Type.tEffVar('e');
 
 void main() {
   test('Basic Swap', () {

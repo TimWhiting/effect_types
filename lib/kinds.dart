@@ -1,35 +1,11 @@
-part of effect_types;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-sealed class Kind {
-  const Kind();
-}
+part 'kinds.freezed.dart';
 
-final class KVal extends Kind {
-  @override
-  String toString() {
-    return '*';
-  }
-}
-
-final class KEff extends Kind {
-  const KEff();
-  @override
-  String toString() {
-    return 'e';
-  }
-}
-
-final class KEffConst extends Kind {
-  const KEffConst();
-  @override
-  String toString() {
-    return 'k';
-  }
-}
-
-final class KCon extends Kind {
-  final List<Kind> args;
-  final Kind result;
-
-  KCon(this.args, this.result);
+@freezed
+sealed class Kind with _$Kind {
+  const factory Kind.kVal() = KVal;
+  const factory Kind.kEff() = KEff;
+  const factory Kind.kEffConst() = KEffConst;
+  const factory Kind.kCon(List<Kind> args, Kind result) = KCon;
 }

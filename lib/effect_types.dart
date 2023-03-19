@@ -1,15 +1,9 @@
-library effect_types;
+import 'package:effect_types/types.dart';
 
-part 'effects.dart';
-part 'kinds.dart';
-part 'types.dart';
+import 'kinds.dart';
 
 final valueK = KVal();
 final funK = KCon([KVal(), KEff(), KVal()], KVal());
 final exEffK = KCon([KEffConst(), KEff()], KEff());
-final boolT = TCon('bool', [], valueK);
-final intT = TCon('int', [], valueK);
-
-extension on Type {
-  bool get isEff => kind == const KEff() || kind == const KEffConst();
-}
+final boolT = TCon(valueK, 'bool', []);
+final intT = TCon(valueK, 'int', []);
