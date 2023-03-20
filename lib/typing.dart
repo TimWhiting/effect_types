@@ -64,12 +64,12 @@ class TypeEnv with _$TypeEnv {
   }
 
   bool checkHandle(
+    TEff l,
     List<TandE> opClauses,
     List<Type> opArgs,
     List<TandE> opExprs,
     List<Type> opResume,
-    Type x,
-    TEff l,
+    Type retArg,
     TandE eRet,
     TandE e,
     TandE expected,
@@ -80,7 +80,7 @@ class TypeEnv with _$TypeEnv {
         opClauses.length != opResume.length) {
       return false;
     }
-    if (x != e.type) {
+    if (retArg != e.type) {
       return false;
     }
     if (e.effect.flatten case TEff(args: final args)) {

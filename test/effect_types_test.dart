@@ -96,34 +96,34 @@ void main() {
     )).isTrue();
   });
 
-  /// ```koka
-  /// effect eff2
-  ///   ctl f(int): bool
+  ///  ```koka
+  ///  effect eff2
+  ///    ctl doF(i: int): bool
   ///
-  /// fun f(b: bool): eff2 int
+  ///  fun h(f: () -> eff2 bool): string
+  ///    handle(f)
+  ///      return(x: bool)
+  ///        if x then "> 0" else "<= 0"
+  ///      ctl doF(i: int)
+  ///        val b = if i > 0 then False else True
+  ///        "doF called with a number " ++ resume(b) ++ " which is not " ++ resume(!b)
   ///
-  /// val h = handle(f)
-  ///   return(x: bool)
-  ///     if x then 1 else 0
-  ///   ctl f(i: int)
-  ///     val b = if i > 0 then False else True
-  ///     2 + resume(b) + resume(!b)
-  ///
-  /// expect(typeof(h), int)
-  /// expect(h, 3)
+  ///  fun main(): console ()
+  ///    h(fn() doF(1)).println
+  ///    h(fn() doF(-1)).println
   /// ```
 
   test('Handle type', () {
     check(TypeEnv().checkHandle(
+      eff2,
       [(Type.tFun(intT, eff2, boolT), Type.emptyEff)],
       [intT],
-      [(intT, Type.emptyEff)],
-      [Type.tFun(boolT, Type.emptyEff, intT)],
+      [(stringT, Type.emptyEff)],
+      [Type.tFun(boolT, Type.emptyEff, stringT)],
       boolT,
-      eff2,
-      (intT, Type.emptyEff),
+      (stringT, Type.emptyEff),
       (boolT, [eff2, Type.emptyEff].row),
-      (boolT, Type.emptyEff),
+      (stringT, Type.emptyEff),
     )).isTrue();
   });
 }
