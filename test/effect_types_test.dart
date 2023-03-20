@@ -60,7 +60,7 @@ void main() {
     )).isFalse();
   });
 
-  test('Handle app', () {
+  test('App type', () {
     check(TypeEnv().checkApp(
       (Type.tFun(boolT, eff1, intT), eff1),
       (boolT, eff1),
@@ -68,7 +68,7 @@ void main() {
     )).isTrue();
   });
 
-  test('Handle app polyEff', () {
+  test('App type polyEff', () {
     check(TypeEnv().checkApp(
       (
         Type.tFun(boolT, [eff2p(boolT), effv].row, intT),
@@ -76,6 +76,54 @@ void main() {
       ),
       (boolT, [eff2p(boolT), effv].row),
       (intT, [eff2p(boolT), effv].row),
+    )).isTrue();
+  });
+
+  test('Lam type', () {
+    check(TypeEnv().checkLam(
+      boolT,
+      (intT, eff1),
+      (Type.tFun(boolT, eff1, intT), eff1),
+    )).isTrue();
+  });
+
+  test('Let type', () {
+    check(TypeEnv().checkLet(
+      (boolT, eff1),
+      boolT,
+      (intT, eff1),
+      (intT, eff1),
+    )).isTrue();
+  });
+
+  /// ```koka
+  /// effect eff2
+  ///   ctl f(int): bool
+  ///
+  /// fun f(b: bool): eff2 int
+  ///
+  /// val h = handle(f)
+  ///   return(x: bool)
+  ///     if x then 1 else 0
+  ///   ctl f(i: int)
+  ///     val b = if i > 0 then False else True
+  ///     2 + resume(b) + resume(!b)
+  ///
+  /// expect(typeof(h), int)
+  /// expect(h, 3)
+  /// ```
+
+  test('Handle type', () {
+    check(TypeEnv().checkHandle(
+      [(Type.tFun(intT, eff2, boolT), Type.emptyEff)],
+      [intT],
+      [(intT, Type.emptyEff)],
+      [Type.tFun(boolT, Type.emptyEff, intT)],
+      boolT,
+      eff2,
+      (intT, Type.emptyEff),
+      (boolT, [eff2, Type.emptyEff].row),
+      (boolT, Type.emptyEff),
     )).isTrue();
   });
 }

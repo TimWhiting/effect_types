@@ -64,10 +64,10 @@ class TypeEnv with _$TypeEnv {
   }
 
   bool checkHandle(
+    List<TandE> opClauses,
     List<Type> opArgs,
     List<TandE> opExprs,
     List<Type> opResume,
-    List<TandE> opClauses,
     Type x,
     TEff l,
     TandE eRet,
@@ -87,7 +87,8 @@ class TypeEnv with _$TypeEnv {
       if (!args.contains(l)) {
         return false;
       }
-      if ((Type.tEffFlatRow([...args]..remove(l)) as TEff).rowEq(eRet.effect)) {
+      final newEff = (Type.tEffFlatRow([...args]..remove(l)) as TEff);
+      if (!newEff.rowEq(eRet.effect)) {
         return false;
       }
     }

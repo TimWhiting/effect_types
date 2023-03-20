@@ -7,3 +7,4 @@ final funK = KCon([KVal(), KEff(), KVal()], KVal());
 final exEffK = KCon([KEffConst(), KEff()], KEff());
 final boolT = TCon(valueK, 'bool', []);
 final intT = TCon(valueK, 'int', []);
+final stringT = TCon(valueK, 'string', []);
