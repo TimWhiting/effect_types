@@ -1,2 +1,4 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# CS 601R: Programming Language Research
+
+An implementation of a Koka type checker built in Dart, for a class project.
+
